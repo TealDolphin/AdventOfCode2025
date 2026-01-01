@@ -3,8 +3,12 @@
 
 string fileLine;
 
-ifstream MyReadFile(".txt");
+ifstream MyReadFile("dayOne.txt");
 
-while (getline (MyReadFile, myText)) {
-  cout << myText;
+while (getline (MyReadFile, fileLine)) {
+  char direction = fileLine[0];
+  try:
+    int clicks = (int) fileLine[1,fileLine.length()];
+  catch:
+    cout << "Impropper input formatting";
 }
