@@ -2,6 +2,7 @@
 // lock picking, check for land on zero
 
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 int main(){
@@ -17,18 +18,16 @@ int main(){
 
   int answer = 0;
 
-  ifstream MyReadFile("dayOne.txt");
+  ifstream MyReadFile("input.txt");
 
   //Read line by line, claims to drop the new line.
   while (getline (MyReadFile, fileLine)) {
+    int clicks = 0;
     //Left or Right
-    char direction = fileLine.substr(0,1);
-    try{
-      //should be a single number to end of line
-      int clicks = (int) fileLine.substr(1);
-    }catch(){
-      cout << "Impropper input formatting";
-    }
+    char direction = fileLine[0];
+
+    //should be a single number to end of line
+    clicks = std::stoi(fileLine.substr(1));
 
     // spin the dial
     if(direction == 'L'){
@@ -45,4 +44,6 @@ int main(){
     if(dial == 0)answer++;
 
   }
+  cout << answer;
+  return answer;
 }
