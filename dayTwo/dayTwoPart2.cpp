@@ -22,16 +22,6 @@ bool repeats(string key, string search){
 
 
 int main(){
-  cout << repeats("1","11") << endl;
-  //cout << repeats("1","111") << endl;
-  //cout << repeats("123","123123") << endl;
-  //cout << repeats("321","321321321") << endl;
-
-  return 0;
-}
-
-/*
-int main(){
   string fileLine;
 
 
@@ -62,14 +52,16 @@ int main(){
       // check if the current value is patterned
       while(len <= toCheck){
         pattern = check.substr(0,len);
+        if(pattern == check)break;
         //cout << len << "-" << toCheck << endl;
 
         //cout << val << endl;
         if(repeats(pattern,check)){
-          //cout << "=" << check << "=" << endl;
+          //cout << "pattern:" << pattern << " check:" << check << endl;
           //cout << answer << endl;
           //cout << val << endl;
           answer+=val;
+          break;
         }
         len++;
       }
@@ -82,4 +74,4 @@ int main(){
   cout << answer << endl;
   return 0;
 }
-*/
+
