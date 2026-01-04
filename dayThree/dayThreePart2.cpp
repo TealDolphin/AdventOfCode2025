@@ -7,8 +7,18 @@
 using namespace std;
 
 
-char int findMax(string *s, int start  int end){
-  
+char int findMax(string* s, int start  int end){
+  int max = 0;
+  char c = '0';
+
+  while(start < end){
+    if(*s[start] > c){
+      c = *s[start];
+      max = start;
+    }
+    start++;
+  }
+  return c, max;
 }
 
 
