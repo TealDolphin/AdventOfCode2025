@@ -7,18 +7,18 @@
 using namespace std;
 
 
-char int findMax(string* s, int start  int end){
+int findMax(const char *s, int start, int end){
   int max = 0;
   char c = '0';
-
   while(start < end){
-    if(*s[start] > c){
-      c = *s[start];
+    //cout << s[start] << endl;;
+    if(s[start] > c){
+      c = s[start];
       max = start;
     }
     start++;
   }
-  return c, max;
+  return max;
 }
 
 
@@ -37,36 +37,20 @@ int main(){
     const char *bank = fileLine.c_str();
     int pos = 0;
     int loc_max = 0;
-    char max = '0';
-    int pair;
+    long long val = 0;
+    int post;
 
-
-    //cout << max << endl;
-
-    // don't visit the final battery otherwise you won't make a two digit number
-    while(pos < (len-1)){
-      //cout << bank << "<>" << max << endl;
-      if(bank[pos] > max){
-        max = bank[pos];
-        loc_max = pos;
-      }
-      pos++;
+    // one battery would be 0 so 12 is 11
+    for(int desired = 11;desired>=0;desired--){
+      loc_max = findMax(bank, pos, len-desired);
+      val*=10;
+      val+=(fileLine[loc_max]-'0');
+      //cout << val << endl;
+      //cin >> post;
+      pos = loc_max+1;
     }
-    pair = (max - '0')*10;
-    pos = loc_max+1;
-    max = '0';
-    //cout << max << endl;
-    //search through the rest of the list for the largest battery to the right of it.
-    while(pos < len){
-      if(bank[pos] > max){
-        max = bank[pos];
-        loc_max = pos;
-      }
-      pos++;
-    }
-    pair+=(max-'0');
-    //cout << pair << endl;
-    answer+=pair;
+    answer+=val;
+    cout << val << endl;
   }
   cout << answer << endl;
   return 0;
