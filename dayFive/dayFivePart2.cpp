@@ -40,28 +40,33 @@ int main(){
 
     long from = stol(fileLine.substr(0,l));
     long to = stol(fileLine.substr(l+1));
+    bool newNode = true;
 
     Node* m = head->next;
+    Node* prev = m;
     while(m != nullptr){
-      if((from >= m->from) && (from <= m->to)){
-        if(to > m->to){
-          m->to = to;
+      if((from >= m->from) && (from <= m->to)){// lower in the range
+        if((to >= m->from) && (to <= m->to)){//upper in the range and lower in the range
+          //no further numbers to work with. Tell the node creation to skip this node
+          to = 0; from = 0;
+          break;
+        }else{
+          from = m->to + 1;
         }
-        from = 0;
-        to = 0;
-        break;
-      }else if((to >= m->from) && (to <= m->to)){
-        if(from < m->from){
-          m->from = from;
-        }
-        from = 0;
-        to = 0;
-        break;
+      }else if((to >= m->from) && (to <= m->to)){//just upper in the range
+        to = m->from - 1;
+      }else if ((from <= m->from) && (to >= m->to)){//new input spans old input
+        //discard old input
+        prev->next = m->next;
+        m = prev->next;
+        continue;
       }
-
+      prev = m;
       m = m->next;
     }
-    if(from != 0 && to != 0){
+
+    // assuming we have any numbers left, make a new node
+    if(to > from){
       Node* n = new Node;
       n->from = from;
       n->to = to;
@@ -78,7 +83,8 @@ int main(){
   Node* n = head;
 
   while(n!=nullptr){
-    answer += (n->to - n->from);
+    //cout << n->from << "<>" << n->to << endl;
+    answer += (n->to - n->from)+1;// +1 due to inclusive to inclusive?
     n = n->next;
   }
 
