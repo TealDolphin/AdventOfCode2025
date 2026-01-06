@@ -1,31 +1,31 @@
-//Advent of code day two
-// check for phony IDs
+//Advent of code day four
+
+/*
+ * Adjacency map
+ * ...
+ * ...
+ * ...
+ * [-1,-1]...[1,1]
+ */
 
 
 #include <iostream>
 #include <fstream>
 using namespace std;
 
-
-int findMax(const char *s, int start, int end){
-  int max = 0;
-  char c = '0';
-  while(start < end){
-    //cout << s[start] << endl;;
-    if(s[start] > c){
-      c = s[start];
-      max = start;
-    }
-    start++;
-  }
-  return max;
-}
-
-
-
 int main(){
   string fileLine;
 
+  int rows = 142;
+  int cols = 142;
+
+  char map[cols][rows];
+  for(int a = 0;a<rows;a++){
+    map[0][a]='.';
+    map[cols-1][a]='.';
+  }
+
+  int nRow = 1;
 
   long long answer = 0;
 
@@ -33,25 +33,59 @@ int main(){
 
   //Read line by line, claims to drop the new line.
   while (getline (MyReadFile, fileLine)) {
-    int len = fileLine.length();
-    const char *bank = fileLine.c_str();
-    int pos = 0;
-    int loc_max = 0;
-    long long val = 0;
-    int post;
+    //cout << nRow << endl;
 
-    // one battery would be 0 so 12 is 11
-    for(int desired = 11;desired>=0;desired--){
-      loc_max = findMax(bank, pos, len-desired);
-      val*=10;
-      val+=(fileLine[loc_max]-'0');
-      //cout << val << endl;
-      //cin >> post;
-      pos = loc_max+1;
+    int len = fileLine.length();
+    //const char *bank = fileLine.c_str();
+
+    //cout << len << endl;
+
+    map[nRow][0] = '.';map[nRow][cols-1]='.';
+    for(int i = 0;i<len;i++){
+      map[nRow][i+1] = fileLine[i];
+
+      if(fileLine[i] != '.' && fileLine[i] != '@'){
+        cout << nRow << "<>" << i << "<>" << fileLine[i] << endl;
+      }
+
+      //cout<<i<<endl;
     }
-    answer+=val;
-    cout << val << endl;
+    //cout << map[nRow] << endl;
+    nRow++;
   }
+//cout << map << endl;
+//cout << map[0] << endl;
+//cout << map[0][0] << endl;
+//cout << map[0][0][0] << endl;
+  /*for(int a = 0;a<142;a++){
+    cout << map[a] << endl;
+    cin >> nRow;
+  }*/
+
+  int ans = 1;
+
+  while(ans > 0){
+    ans = 0;
+    // seperate search algorithm because the lines rely on the previous and next lines' input.
+    for(int i = 1;i<(rows-1);i++){
+      for(int j = 1;j<(cols-1);j++){
+        if(map[i][j] == '@'){
+          //int adj = 0;
+          //'.' = 46, '@' = 64, max 3 @
+          //4*64+4*46=440
+          long val = map[i-1][j-1]+map[i-1][j]+map[i-1][j+1]+map[i][j-1]+map[i][j+1]+map[i+1][j-1]+map[i+1][j]+map[i+1][j+1];
+          //cout << val << endl;
+          if(val < 440){
+            ans++;
+            map[i][j] = '.'; //replace the roll with an empty slot
+          }
+        }
+      }
+    }
+    answer += ans;
+  }
+
+
   cout << answer << endl;
   return 0;
 }

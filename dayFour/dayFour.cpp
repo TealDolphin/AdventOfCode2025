@@ -33,7 +33,7 @@ int main(){
 
   //Read line by line, claims to drop the new line.
   while (getline (MyReadFile, fileLine)) {
-    cout << nRow << endl;
+    //cout << nRow << endl;
 
     int len = fileLine.length();
     //const char *bank = fileLine.c_str();
@@ -66,13 +66,15 @@ int main(){
   // seperate search algorithm because the lines rely on the previous and next lines' input.
   for(int i = 1;i<(rows-1);i++){
     for(int j = 1;j<(cols-1);j++){
-      //int adj = 0;
-      //'.' = 46, '@' = 64, max 3 @
-      //4*64+4*46=440
-      long val = map[i-1][j-1]+map[i-1][j]+map[i-1][j+1]+map[i][j-1]+map[i][j+1]+map[i+1][j-1]+map[i+1][j]+map[i+1][j+1];
-      //cout << val << endl;
-      if(val < 440){
-        answer++;
+      if(map[i][j] == '@'){
+        //int adj = 0;
+        //'.' = 46, '@' = 64, max 3 @
+        //4*64+4*46=440
+        long val = map[i-1][j-1]+map[i-1][j]+map[i-1][j+1]+map[i][j-1]+map[i][j+1]+map[i+1][j-1]+map[i+1][j]+map[i+1][j+1];
+        //cout << val << endl;
+        if(val < 440){
+          answer++;
+        }
       }
     }
   }
