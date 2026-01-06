@@ -16,10 +16,13 @@ using namespace std;
 int main(){
   string fileLine;
 
-  char map[142][142];
-  for(int a = 0;a<142;a++){
+  int rows = 142;
+  int cols = 142;
+
+  char map[cols][rows];
+  for(int a = 0;a<rows;a++){
     map[0][a]='.';
-    map[141][a]='.';
+    map[cols-1][a]='.';
   }
 
   int nRow = 1;
@@ -37,7 +40,7 @@ int main(){
 
     //cout << len << endl;
 
-    map[nRow][0] = '.';map[nRow][141]='.';
+    map[nRow][0] = '.';map[nRow][cols-1]='.';
     for(int i = 0;i<len;i++){
       map[nRow][i+1] = fileLine[i];
 
@@ -61,8 +64,8 @@ int main(){
 
 
   // seperate search algorithm because the lines rely on the previous and next lines' input.
-  for(int i = 1;i<141;i++){
-    for(int j = 1;j<141;j++){
+  for(int i = 1;i<(rows-1);i++){
+    for(int j = 1;j<(cols-1);j++){
       //int adj = 0;
       //'.' = 46, '@' = 64, max 3 @
       //4*64+4*46=440
