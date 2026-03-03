@@ -9,7 +9,7 @@ using namespace std;
 struct Node{
   long from = 0;
   long to = 0;
-  struct Node* next = nullptr;
+  Node* next = NULL;
   bool defunct = false;
 };
 
@@ -21,8 +21,8 @@ int main(){
   //long l1 = 0;
   //long l2 = 0;
 
-  Node* head = nullptr;
-  Node* tail = nullptr;
+  Node* head = NULL;
+  Node* tail = NULL;
   //cout << head << endl;
 
   ifstream MyReadFile("test.txt");
@@ -44,12 +44,13 @@ int main(){
     Node* n = new Node;
     n->from = from;
     n->to = to;
+    n->defunct = false;
     //cout << n->from << "<>" << n->to << endl;
     //cout << n << endl;
     //cout << head << endl;
     //cout << !head << endl;
 
-    if(!head){
+    if(head == NULL){
       //cout << n->from << "<>" << n->to << endl;
       head = n;
       tail = n;
@@ -62,7 +63,7 @@ int main(){
       changed = 0;
       place = head;
 
-      while(place){
+      while(place != 0){
         //cout << n->from << "<>" << n->to << endl;
         // rather than dropping the node instantly, I mark is as not usable.
         if(place->defunct){
@@ -121,10 +122,10 @@ int main(){
 
 
   Node* p = head;
-  while(p){
+  while(p != 0){
     cout << p->defunct << endl;
     cout << answer << endl;
-    if(!p->defunct){
+    if(p->defunct == false){
       // input is inclusive, but subtraction is non-inclusive.
       answer += ((p->to + 1) - p->from);
     }
