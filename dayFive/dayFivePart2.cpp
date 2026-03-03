@@ -7,9 +7,9 @@
 using namespace std;
 
 struct Node{
-  long from;
-  long to;
-  struct Node* next;
+  long from = 0;
+  long to = 0;
+  struct Node* next = nullptr;
   bool defunct = false;
 };
 
@@ -21,11 +21,12 @@ int main(){
   //long l1 = 0;
   //long l2 = 0;
 
-  Node* head;
-  Node* tail;
+  Node* head = nullptr;
+  Node* tail = nullptr;
+  //cout << head << endl;
 
+  ifstream MyReadFile("test.txt");
 
-  ifstream MyReadFile("input.txt");
 
   //Read line by line, claims to drop the new line.
   while (getline (MyReadFile, fileLine)) {
@@ -44,10 +45,12 @@ int main(){
     n->from = from;
     n->to = to;
     //cout << n->from << "<>" << n->to << endl;
-    cout << head << endl;
+    //cout << n << endl;
+    //cout << head << endl;
+    //cout << !head << endl;
 
     if(!head){
-      cout << n->from << "<>" << n->to << endl;
+      //cout << n->from << "<>" << n->to << endl;
       head = n;
       tail = n;
       continue;
@@ -60,13 +63,13 @@ int main(){
       place = head;
 
       while(place){
-        cout << n->from << "<>" << n->to << endl;
+        //cout << n->from << "<>" << n->to << endl;
         // rather than dropping the node instantly, I mark is as not usable.
         if(place->defunct){
           place = place->next;
           continue;
         }
-        if(place->next && place->next->defunct){
+        if((place->next) && place->next->defunct){
           place->next = place->next->next;
         }
         // check for node throw away
@@ -108,16 +111,19 @@ int main(){
       if(changed == 2) break;
     }
 
+
     if(changed == 0){
       tail->next = n;
       tail = tail->next;
-      cout << n->from << "<>" << n->to << endl;
+      //cout << n->from << "<>" << n->to << endl;
     }
   }
 
 
   Node* p = head;
   while(p){
+    cout << p->defunct << endl;
+    cout << answer << endl;
     if(!p->defunct){
       // input is inclusive, but subtraction is non-inclusive.
       answer += ((p->to + 1) - p->from);
