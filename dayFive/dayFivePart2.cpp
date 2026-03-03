@@ -10,6 +10,7 @@ struct Node{
   long from;
   long to;
   struct Node* next;
+  bool defunct = false;
 };
 
 
@@ -17,14 +18,11 @@ struct Node{
 int main(){
   string fileLine;
   long long answer = 0;
-  int l1 = 0;
-  int l2 = 0;
+  //long l1 = 0;
+  //long l2 = 0;
 
   Node* head;
   Node* tail;
-
-  head = new Node;
-  tail = head;
 
 
   ifstream MyReadFile("input.txt");
@@ -40,8 +38,94 @@ int main(){
 
     long from = stol(fileLine.substr(0,l));
     long to = stol(fileLine.substr(l+1));
-    bool newNode = true;
+    //bool newNode = true;
 
+    Node* n = new Node;
+    n->from = from;
+    n->to = to;
+    //cout << n->from << "<>" << n->to << endl;
+    cout << head << endl;
+
+    if(!head){
+      cout << n->from << "<>" << n->to << endl;
+      head = n;
+      tail = n;
+      continue;
+    }
+    int changed = 1;
+    Node* place;
+
+    while(changed > 0){
+      changed = 0;
+      place = head;
+
+      while(place){
+        cout << n->from << "<>" << n->to << endl;
+        // rather than dropping the node instantly, I mark is as not usable.
+        if(place->defunct){
+          place = place->next;
+          continue;
+        }
+        if(place->next && place->next->defunct){
+          place->next = place->next->next;
+        }
+        // check for node throw away
+        if((place->from <= n->from) && (place->to >= n->to)){
+          changed = 2;
+          break;
+        }
+        // new node totally outside old node
+        if((place->from > n->to) || (place->to < n->from)){
+          place = place->next;
+          continue;
+        }
+
+        // new node lower bound already accounted for
+        if(place->to >= n->from){
+          n->from = place->to + 1;
+          changed = 1;
+        }
+
+        // new node upper bound already accounted for
+        if(place->from <= n->to){
+          n->to = place->from + 1;
+          changed = 1;
+        }
+
+        // new node surrounds old node
+        if((place->from >= n->from) && (place->to <= n->to)){
+          place->defunct = true;
+          changed = 1;
+        }
+
+        // the new node would be 0 or less numbers, exit
+        if(n->from > n->to){
+          changed = 2;
+          break;
+        }
+        place = place->next;
+      }
+      if(changed == 2) break;
+    }
+
+    if(changed == 0){
+      tail->next = n;
+      tail = tail->next;
+      cout << n->from << "<>" << n->to << endl;
+    }
+  }
+
+
+  Node* p = head;
+  while(p){
+    if(!p->defunct){
+      // input is inclusive, but subtraction is non-inclusive.
+      answer += ((p->to + 1) - p->from);
+    }
+    p = p->next;
+  }
+
+    /*
     Node* m = head->next;
     Node* prev = m;
     while(m != nullptr){
