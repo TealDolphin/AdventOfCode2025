@@ -12,21 +12,72 @@ int main(){
   string fileLine;
   long long answer = 0;
 
-  // 4 input rows, 3700 characters long, 3500 should be extreme overkill
+  // 4 input rows
   int numbers[4][1200];
+
+  for(int b = 0;b<1200;b++){
+    numbers[0][b] = 0;
+    numbers[1][b] = 0;
+    numbers[2][b] = 0;
+    numbers[3][b] = 0;
+  }
+
+
   int j = 0;
   char opp[1200];
 
-  //string input[5];
+  string input[5];
 
   ifstream MyReadFile("input.txt");
 
   //Read line by line, claims to drop the new line.
   while (getline (MyReadFile, fileLine)) {
-    //input[j++] = fileLine;
-  //}
+    input[j++] = fileLine;
+  }
+
+  cout << input[0][3733] << endl;
+
+  int i = 0;
+  int o = 0;
+  j = 0;
+  while(input[0][i] != 0){
+    int num[4];
+    num[0] = input[0][i];
+    num[1] = input[1][i];
+    num[2] = input[2][i];
+    num[3] = input[3][i];
+
+    if(input[4][i] != ' '){
+      opp[o++] = input[4][i];
+      opp[o] = 0;
+    }
+
+    //cout << num[0] << '/' << num[1] << '/' << num[2] << '/' << num[3] << endl;
+    //cout << opp[o-1] << endl;
+
+    if((num[0] == ' ') && (num[1] == ' ') && (num[2] == ' ') && (num[3] == ' ')){
+      j = 0;
+    }else{
+      int n = 0;
+
+      for(int q = 0; q<4;q++){
+        if(num[q] != ' '){
+          n = (n*10) + (num[q]-'0');
+        }
+      }
+      cout << n << endl;
+      numbers[j++][o-1] = n;
+    }
+    i++;
+  }
+  //cout << i << endl;
 
 
+
+
+
+
+    /*
     int i = 0;
     int num = 0;
 
@@ -49,7 +100,7 @@ int main(){
           num = 0;
         }
       }
-    }
+    }*/
 
 
 
@@ -58,17 +109,16 @@ int main(){
       cout << fileLine << endl;
       cout << c << endl;
       cout << typeid(fileLine).name() << endl;
-*/
-    j++;
-  }
 
+    j++;
+  }*/
 
 
   int k = 0;
   int a[2] = {0,0};
-  // the input array doesn't contain 0s as inputs, so it should be safe to check for zero
-  while (numbers[3][k] != 0){
-    cout << opp[k] << ",";
+  // I set the opperator function to '+' or '*' with a trailing 0
+  while (opp[k] != 0){
+    //cout << opp[k] << ",";
     //cout << numbers[0][k] << " " << numbers[1][k] << " " << numbers[2][k] << " " << numbers[3][k] << " " << opp[k] << endl;
     if(opp[k] == '+'){
       long long p = numbers[0][k];
@@ -79,6 +129,9 @@ int main(){
       a[0]++;
     }else if(opp[k] == '*'){
       long long p = numbers[0][k];
+      if(numbers[1][k] != 0`){
+
+      }
       p = p * numbers[1][k];
       p = p * numbers[2][k];
       p = p * numbers[3][k];
@@ -89,9 +142,9 @@ int main(){
     }
     k++;
   }
-  cout << k << endl;
+  //cout << k << endl;
   //cout << numbers[0][k] << " " << numbers[1][k] << " " << numbers[2][k] << " " << numbers[3][k] << " " << opp[k] << endl;
-  cout << endl << a[0] << "/" << a[1] << endl;
+  //cout << endl << a[0] << "/" << a[1] << endl;
   cout << answer << endl;
   return 0;
 }
